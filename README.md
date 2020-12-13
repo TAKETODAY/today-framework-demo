@@ -1,88 +1,25 @@
 # TODAY Framework Demo
 
-> TODAY Framework Demo [TODAY Framework](https://github.com/TAKETODAY/today-framework)
+> [TODAY Framework](https://github.com/TAKETODAY/today-framework) Demo
 
-> 整个项目不需要在web.xml中声明有关框架的 `Listener`,`Servlet`,`Filter`
 
-> 可以在web.xml中指定配置文件:
+启动类：[cn.taketoday.demo.DemoApplication](src/main/java/cn/taketoday/demo/DemoApplication.java)
+```java
+public class DemoApplication 
+      implements ApplicationListener<WebApplicationStartedEvent>, WebMvcConfiguration {
 
-```xml
-<context-param>
-    <param-name>WebMvcConfigLocation</param-name>
-    <param-value>xxx.xml</param-value>
-</context-param>
-```
+  @Value("#{site.server.appPath}")
+  private String path;
 
-> 声明配置文件位置的步骤可有可无。
+  @GET("index/{q}")
+  public String index(String q) {
+    return q;
+  }
 
-- 声明配置文件位置后应用启动速度更快
-- 未声明配置文件位置，框架会扫描项目下所有目录速度慢
-- 如果没有发现配置文件将使用默认配置
-- 支持多个配置文件
-
-> XML配置文件:
-
-```xml
-<!DOCTYPE Web-Configuration PUBLIC 
-			"-//TODAY BLOG//Web - Configuration DTD 2.0//CN"
-				"https://taketoday.cn/framework/web/dtd/web-configuration-2.3.3.dtd">
-
-<!--
- 	"https://taketoday.cn/framework/web/dtd/web-configuration-2.3.3.dtd">
--->
-<Web-Configuration>
-
-    <controller prefix="/error/">
-        <action resource="400" name="BadRequest" status="400" />
-        <action resource="403" name="Forbidden" status="403" />
-        <action resource="404" name="NotFound" status="404" />
-        <action resource="500" name="ServerIsBusy" status="500" />
-        <action resource="405" name="MethodNotAllowed" status="405" />
-    </controller>
-
-    <controller>
-        <action resource="redirect:https://taketoday.cn" name="today" />
-        <action resource="redirect:https://github.com" name="github" />
-        <action resource="redirect:/login" name="login.do" />
-    </controller>
-
-    <controller class="cn.taketoday.web.demo.controller.XMLController" name="xmlController" prefix="/xml/">
-        <action name="obj" method="obj" />
-        <action name="test" resource="test" method="test"/>
-    </controller>
-
-</Web-Configuration>
-
-```
-
-> Properties 配置
-
-```properties
-############################################ view 
-view.suffix 	= .ftl
-view.encoding 	= UTF-8
-view.prefix 	= /WEB-INF/ftl
-
-############################################ upload
-upload.encoding 	= UTF-8
-upload.maxFileSize 	= 1024MB
-upload.maxRequestSize 		= 1GB
-upload.fileSizeThreshold	= 2048MB
-
-############################################ freemarker
-freemarker.tag_syntax 				= auto_detect
-freemarker.template_update_delay 	= 0
-freemarker.locale 					= UTF-8
-freemarker.default_encoding 		= UTF-8
-freemarker.number_format	 		= 0.####
-freemarker.datetime_format 			= yyyy-MM-dd HH:mm:ss
-freemarker.date_format 				= yyyy-MM-dd
-freemarker.time_format				= HH:mm:ss
-freemarker.url_escaping_charset		= UTF-8
-freemarker.classic_compatible 		= true
-freemarker.template_exception_handler 	= ignore
-freemarker.log_template_exceptions 		= false
-
+  public static void main(String[] args) {
+    WebApplication.run(DemoApplication.class, args);
+  }
+}
 ```
 > 示例
 - [普通参数注入示例](src/main/java/cn/taketoday/demo/controller/IndexController.java)
@@ -102,6 +39,7 @@ freemarker.log_template_exceptions 		= false
 - [自定义参数解析器示例](src/main/java/cn/taketoday/demo/config/UserSessionParameterResolver.java)
 - [自定义参数解析器示例](src/main/java/cn/taketoday/demo/config/PageableMethodArgumentResolver.java)
 - [ResponseEntity](src/main/java/cn/taketoday/demo/controller/ResponseEntityController.java)
+- ...
 
 
 ### 联系方式
