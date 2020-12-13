@@ -94,6 +94,56 @@ public class WebMvcConfig implements WebMvcConfiguration {
 
 ```
 
+全局异常处理
+```java
+@ControllerAdvice
+public class ApplicationExceptionAdvice {
+
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ExceptionHandler(UnauthorizedException.class)
+  public Json unauthorized() {
+    log.error("Unauthorized");
+    return Json.unauthorized();
+  }
+
+  @ExceptionHandler(AccessForbiddenException.class)
+  public Json accessForbidden() {
+    log.error("Access Forbidden");
+    return Json.badRequest("权限不足");
+  }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler({ IllegalArgumentException.class })
+  public Json badRequest(IllegalArgumentException illegalArgumentException) {
+    log.error("Bad request", illegalArgumentException);
+    return Json.badRequest(illegalArgumentException.getMessage());
+  }
+
+  @ExceptionHandler({ NotFoundException.class })
+  public Json notFound(NotFoundException exceededException) {
+    log.error(exceededException.getMessage(), exceededException);
+
+    return Json.notFound();
+  }
+
+  @ExceptionHandler({ FileSizeExceededException.class })
+  public Json badRequest(FileSizeExceededException exceededException) {
+    log.error(exceededException.getMessage(), exceededException);
+    return Json.badRequest("上传文件大小超出限制");
+  }
+
+  @ExceptionHandler
+  public Json error(Throwable exception) {
+
+    log.error("An Exception occurred", exception);
+
+    return Json.failed(exception.getMessage());
+  }
+
+}
+
+```
+
 > 示例
 - [普通参数注入示例](src/main/java/cn/taketoday/demo/controller/IndexController.java)
 - [注解参数注入示例](src/main/java/cn/taketoday/demo/controller/AnnotationController.java)
