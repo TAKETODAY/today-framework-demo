@@ -47,5 +47,5 @@ public class DemoApplication
 
 ### 开源协议
 
-请查看 [GNU GENERAL PUBLIC LICENSE](https://github.com/TAKETODAY/today-web-demo/blob/master/LICENSE)
+请查看 [GNU GENERAL PUBLIC LICENSE](https://github.com/TAKETODAY/today-framework-demo/blob/master/LICENSE)
 
