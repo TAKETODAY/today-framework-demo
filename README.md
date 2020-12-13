@@ -21,6 +21,79 @@ public class DemoApplication
   }
 }
 ```
+Java 配置
+
+```java
+@Configuration
+//@EnableDefaultMybatis
+//@EnableRedissonCaching
+@EnableResourceHandling
+@EnableFunctionalHandling
+public class WebMvcConfig implements WebMvcConfiguration {
+
+  @Singleton
+  @Profile("dev")
+  public ResourceHandlerRegistry devRsourceMappingRegistry(@Env("site.uploadPath") String upload,
+                                                           @Env("site.assetsPath") String assetsPath) //
+  {
+    final ResourceHandlerRegistry registry = new ResourceHandlerRegistry();
+
+    registry.addResourceMapping("/assets/**")//
+            .addLocations(assetsPath);
+
+    registry.addResourceMapping("/upload/**")//
+            .addLocations(upload);
+
+    registry.addResourceMapping("/logo.png")//
+            .addLocations("file:///D:/dev/www.yhj.com/webapps/assets/images/logo.png");
+
+    registry.addResourceMapping("/favicon.ico")//
+            .addLocations("classpath:/favicon.ico");
+
+    return registry;
+  }
+
+  @Singleton
+  @Profile("prod")
+  public ResourceHandlerRegistry prodResourceMappingRegistry() {
+
+    final ResourceHandlerRegistry registry = new ResourceHandlerRegistry();
+
+    registry.addResourceMapping(LoginInterceptor.class)//
+            .setPathPatterns("/assets/admin/**")//
+            .setOrder(Ordered.HIGHEST_PRECEDENCE)//
+            .addLocations("/assets/admin/");
+
+    return registry;
+  }
+
+  @Autowired
+  private FunctionController functionController;
+
+  @Override
+  public void configureViewController(ViewControllerHandlerRegistry registry) {
+
+    registry.addViewController("/github", "redirect:https://github.com");
+    registry.addViewController("/login.do")
+            .setResource("redirect:/login");
+  }
+
+  @Override
+  public void configureFunctionHandler(FunctionHandlerRegistry registry) {
+
+    registry.get("/function", functionController::function);
+    registry.get("/function/test", functionController::test);
+    registry.get("/function/script", functionController::script);
+
+    registry.get("/function/error/500", (context) -> {
+      context.sendError(500);
+    });
+  }
+
+}
+
+```
+
 > 示例
 - [普通参数注入示例](src/main/java/cn/taketoday/demo/controller/IndexController.java)
 - [注解参数注入示例](src/main/java/cn/taketoday/demo/controller/AnnotationController.java)
