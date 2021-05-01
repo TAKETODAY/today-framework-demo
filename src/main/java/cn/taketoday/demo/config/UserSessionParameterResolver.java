@@ -19,21 +19,25 @@
  */
 package cn.taketoday.demo.config;
 
-import javax.servlet.http.HttpSession;
-
 import cn.taketoday.context.annotation.Singleton;
 import cn.taketoday.demo.Constant;
 import cn.taketoday.web.RequestContext;
 import cn.taketoday.web.exception.UnauthorizedException;
 import cn.taketoday.web.handler.MethodParameter;
 import cn.taketoday.web.resolver.OrderedParameterResolver;
+import cn.taketoday.web.session.WebSessionManager;
+import cn.taketoday.web.session.WebSessionManagerSupport;
 
 /**
  * @author TODAY <br>
- *         2019-07-25 00:56
+ * 2019-07-25 00:56
  */
 @Singleton
-public class UserSessionParameterResolver implements OrderedParameterResolver {
+public class UserSessionParameterResolver extends WebSessionManagerSupport implements OrderedParameterResolver {
+
+  public UserSessionParameterResolver(WebSessionManager sessionManager) {
+    super(sessionManager);
+  }
 
   @Override
   public boolean supports(MethodParameter parameter) {
@@ -42,8 +46,7 @@ public class UserSessionParameterResolver implements OrderedParameterResolver {
 
   @Override
   public Object resolveParameter(final RequestContext requestContext, final MethodParameter parameter) throws Throwable {
-
-    final Object attribute = requestContext.nativeSession(HttpSession.class).getAttribute(Constant.USER_INFO);
+    final Object attribute = getAttribute(requestContext, Constant.USER_INFO);
     if (attribute == null) {
       throw new UnauthorizedException();
     }

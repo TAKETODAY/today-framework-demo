@@ -21,24 +21,26 @@ package cn.taketoday.demo.interceptor;
 
 import com.alibaba.fastjson.JSON;
 
-import javax.servlet.http.HttpSession;
-
 import cn.taketoday.demo.Constant;
 import cn.taketoday.demo.view.Json;
 import cn.taketoday.web.RequestContext;
 import cn.taketoday.web.interceptor.HandlerInterceptor;
+import cn.taketoday.web.interceptor.WebSessionHandlerInterceptor;
+import cn.taketoday.web.session.WebSessionManager;
 
 /**
  * @author Today <br>
  * 2018-10-27 10:13
  */
-public class LoginInterceptor implements HandlerInterceptor {
+public class LoginInterceptor extends WebSessionHandlerInterceptor implements HandlerInterceptor {
+
+  public LoginInterceptor(WebSessionManager sessionManager) {
+    super(sessionManager);
+  }
 
   @Override
   public boolean beforeProcess(RequestContext requestContext, Object webMapping) throws Throwable {
-
-    if ((requestContext.nativeSession(HttpSession.class).getAttribute(Constant.USER_INFO)) == null) {
-
+    if (getAttribute(requestContext, Constant.USER_INFO) == null) {
       requestContext.getWriter().write(JSON.toJSONString(Json.failed().setCode(401).setMsg("Login Time Out")));
       return false;
     }

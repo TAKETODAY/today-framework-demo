@@ -35,7 +35,7 @@ public class ThymeleafController extends BaseController {
   @ActionMapping("/thymeleaf")
   public String thymeleaf(RequestContext request) {
 
-    request.attribute("hello", "Hello thymeleaf");
+    request.setAttribute("hello", "Hello thymeleaf");
 
     return "/hello";
   }
@@ -43,7 +43,7 @@ public class ThymeleafController extends BaseController {
   @ActionMapping("/thymeleaf/array")
   public String thymeleaf_array(RequestContext request) {
 
-    request.attribute("arrays", new Integer[] { 1, 100, 22, 33 });
+    request.setAttribute("arrays", new Integer[] { 1, 100, 22, 33 });
 
     return "/array";
   }

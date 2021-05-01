@@ -38,17 +38,17 @@ public class XMLController {
 
     System.err.println(userService);
     userService.login(null);
-    request.attribute("key", "World");
+    request.setAttribute("key", "World");
     System.err.println(request);
   }
 
   public Object obj(RequestContext request) {
 
-    String key = request.parameter("r");
+    String key = request.getParameter("r");
     if (StringUtils.isNotEmpty(key)) {
       return "redirect:/" + key;
     }
-    request.attribute("key", request.parameter("key"));
+    request.setAttribute("key", request.getParameter("key"));
 
     return "/xml/test";
   }

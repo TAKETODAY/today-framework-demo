@@ -66,11 +66,11 @@ public class UserController extends BaseController {
 
     User login = userService.login(user);
     if (login == null) {
-      redirectModel.attribute("userId", user.getEmail());
-      redirectModel.attribute("msg", "登录失败");
+      redirectModel.setAttribute("userId", user.getEmail());
+      redirectModel.setAttribute("msg", "登录失败");
       return "redirect:/login";
     }
-    redirectModel.attribute("msg", "登录成功");
+    redirectModel.setAttribute("msg", "登录成功");
     session.setAttribute(USER_INFO, login);
     return "redirect:/user/info";
   }
@@ -94,22 +94,22 @@ public class UserController extends BaseController {
   @ActionMapping(value = "/user/info", method = RequestMethod.GET)
   @Interceptor(LoginInterceptor.class)
   public String user(RequestContext request) {
-    request.attribute("msg", "用户信息 ");
+    request.setAttribute("msg", "用户信息 ");
     return "/user/info";
   }
 
   @Interceptor(LoginInterceptor.class)
   @ActionMapping(value = "/user/list", method = RequestMethod.GET)
   public String list(RequestContext request, List<User> user) {
-    request.attribute("msg", "用户信息");
-    request.attribute("users", user);
+    request.setAttribute("msg", "用户信息");
+    request.setAttribute("users", user);
     return "/user/list";
   }
 
   @ActionMapping(value = "/user/add", method = RequestMethod.GET)
   public String add(RequestContext request) {
-    request.attribute("msg", "添加用户");
-    request.attribute("max", 5);
+    request.setAttribute("msg", "添加用户");
+    request.setAttribute("max", 5);
     return "/user/add";
   }
 
@@ -122,7 +122,7 @@ public class UserController extends BaseController {
 
   @ActionMapping(value = "/user/map", method = RequestMethod.GET)
   public String addMap(RequestContext request) {
-    request.attribute("msg", "添加用户");
+    request.setAttribute("msg", "添加用户");
     return "/user/map";
   }
 
@@ -142,7 +142,7 @@ public class UserController extends BaseController {
 
   @ActionMapping(value = "/user/date", method = RequestMethod.GET)
   public String date(RequestContext request) {
-    request.attribute("msg", "自定义参数解析器测试");
+    request.setAttribute("msg", "自定义参数解析器测试");
     return "/param/date";
   }
 

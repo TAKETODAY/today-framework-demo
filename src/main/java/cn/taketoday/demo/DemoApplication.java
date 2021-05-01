@@ -21,16 +21,16 @@ package cn.taketoday.demo;
 
 import cn.taketoday.context.Ordered;
 import cn.taketoday.context.annotation.Configuration;
-import cn.taketoday.context.annotation.ContextListener;
 import cn.taketoday.context.annotation.Import;
 import cn.taketoday.context.annotation.Profile;
 import cn.taketoday.context.annotation.Value;
-import cn.taketoday.context.listener.ApplicationListener;
+import cn.taketoday.context.event.ApplicationListener;
+import cn.taketoday.context.event.EventListener;
 import cn.taketoday.demo.interceptor.LoginInterceptor;
 import cn.taketoday.framework.ConfigurableWebServerApplicationContext;
 import cn.taketoday.framework.WebApplication;
 import cn.taketoday.framework.annotation.Starter;
-import cn.taketoday.framework.server.tomcat.TomcatServer;
+import cn.taketoday.framework.server.TomcatServer;
 import cn.taketoday.orm.mybatis.EnableDefaultMybatis;
 import cn.taketoday.web.annotation.GET;
 import cn.taketoday.web.annotation.RequestMapping;
@@ -39,6 +39,7 @@ import cn.taketoday.web.config.WebMvcConfiguration;
 import cn.taketoday.web.event.WebApplicationStartedEvent;
 import cn.taketoday.web.registry.ResourceHandlerRegistry;
 import cn.taketoday.web.resource.CacheControl;
+import cn.taketoday.web.session.EnableWebSession;
 import cn.taketoday.web.ui.ModelAndView;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,8 +51,9 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @ResponseBody
 //@RestController
-@ContextListener
+@EventListener
 @RequestMapping
+@EnableWebSession
 //@EnableDefaultNetty
 @EnableDefaultMybatis
 @Import({ TomcatServer.class })
@@ -114,7 +116,7 @@ public class DemoApplication implements ApplicationListener<WebApplicationStarte
 
     registry.addResourceMapping("/favicon.ico")//
             .addLocations("classpath:/favicon.ico")//
-            .cacheControl(CacheControl.create().publicCache());
+            .cacheControl(CacheControl.noCache().cachePublic());
 
     registry.addResourceMapping(LoginInterceptor.class)//
             .setOrder(Ordered.HIGHEST_PRECEDENCE)//

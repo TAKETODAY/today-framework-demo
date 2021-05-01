@@ -57,7 +57,7 @@ public final class PathVariableController {
 
   @ActionMapping(value = { "/path/{name}/{id}.html" }, method = RequestMethod.GET)
   public String path_(String name, Integer id) {
-    RequestContextHolder.currentContext().contentType(Constant.DEFAULT_CONTENT_TYPE);
+    RequestContextHolder.currentContext().setContentType(Constant.DEFAULT_CONTENT_TYPE);
     return "name -> " + name + "/id -> " + id;
   }
 

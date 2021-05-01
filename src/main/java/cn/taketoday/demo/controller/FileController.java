@@ -109,7 +109,7 @@ public final class FileController extends BaseController {
   public final void display_void(RequestContext response,
                                  @SessionAttribute(USER_INFO) User user) throws IOException {
 
-    response.contentType("image/jpeg");
+    response.setContentType("image/jpeg");
     String imagePath = "D:/taketoday.cn/webapps/upload/logo.png";
     // png格式
     ImageIO.write(ImageIO.read(new File(imagePath)), "png", response.getOutputStream());
@@ -119,7 +119,7 @@ public final class FileController extends BaseController {
   @GET("/display")
   public final BufferedImage display(RequestContext response) throws IOException {
 
-    response.contentType("image/jpeg");
+    response.setContentType("image/jpeg");
     return ImageIO.read(new File("D:/WebSite/data/doc/upload/logo.png"));
   }
 
@@ -134,7 +134,7 @@ public final class FileController extends BaseController {
 
     Graphics2D graphics2d = (Graphics2D) graphics;
     drawRandomNum(graphics2d, response);
-    response.contentType("image/jpeg");
+    response.setContentType("image/jpeg");
     ImageIO.write(image, "jpg", response.getOutputStream());
 
     return;

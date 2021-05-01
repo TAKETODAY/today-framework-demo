@@ -53,7 +53,7 @@ public class ModelAndViewController {
   @RequestMapping("index")
   public void index(ModelAndView modelAndView) {
     modelAndView.setView(request.requestBody());
-    modelAndView.setView(request.requestURI());
+    modelAndView.setView(request.getRequestPath());
   }
 
   @RequestMapping("nothing")

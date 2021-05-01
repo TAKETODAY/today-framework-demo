@@ -39,7 +39,7 @@ public class RedirectModelController {
   @GET("/to/{path}")
   public ModelAndView view(RedirectModel model, @PathVariable String path) {
 
-    model.attribute("msg", "欢迎登录");
+    model.setAttribute("msg", "欢迎登录");
     System.err.println(path);
     //http://localhost/redirect/to/https://taketoday.cn
     return new ModelAndView("redirect:/" + path);

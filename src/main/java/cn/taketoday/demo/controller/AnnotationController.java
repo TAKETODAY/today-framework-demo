@@ -22,6 +22,7 @@ package cn.taketoday.demo.controller;
 import cn.taketoday.web.RequestContext;
 import cn.taketoday.web.annotation.Application;
 import cn.taketoday.web.annotation.CookieValue;
+import cn.taketoday.web.annotation.EnableCrossOrigin;
 import cn.taketoday.web.annotation.GET;
 import cn.taketoday.web.annotation.RequestHeader;
 import cn.taketoday.web.annotation.RestController;
@@ -30,25 +31,26 @@ import cn.taketoday.web.annotation.RestController;
  * @author Today <br>
  * 2018-10-27 10:07
  */
+@EnableCrossOrigin
 @RestController
 public class AnnotationController {
 
   @GET("header")
   public String annotation(RequestContext request, @RequestHeader("User-Agent") String agent) {
 
-    return request.method() + " User-Agent -> " + agent;
+    return request.getMethod() + " User-Agent -> " + agent;
   }
 
   @GET("cookie")
   public String cookie(RequestContext request, @CookieValue("JSESSIONID") String sessionId) {
 
-    return request.method() + " your sessionId -> " + sessionId;
+    return request.getMethod() + " your sessionId -> " + sessionId;
   }
 
   @GET("application")
   public String application(RequestContext request, @Application("contextPath") String sessionId) {
 
-    return request.method() + " your contextPath -> " + sessionId;
+    return request.getMethod() + " your contextPath -> " + sessionId;
   }
 
 }
